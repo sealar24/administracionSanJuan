@@ -1,0 +1,71 @@
+package administracion.vista;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ModificarSocioForm {
+
+    /**
+     * Muestra un formulario para modificar los datos de un socio.
+     *
+     * @param parent   La ventana principal desde donde se invoca este formulario.
+     * @param telefono El teléfono actual del socio.
+     * @param whatsapp El WhatsApp actual del socio.
+     * @param email    El email actual del socio.
+     * @param direccion La dirección actual del socio.
+     * @return Un array de Strings con los nuevos datos en el orden [teléfono, WhatsApp, email, dirección].
+     *         Retorna null si el usuario cancela la operación.
+     */
+    public static String[] mostrarFormulario(JFrame parent, String telefono, String whatsapp, String email, String direccion) {
+        // Crear un panel con un diseño en cuadrícula para los campos
+        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Etiquetas y campos de texto
+        panel.add(new JLabel("Teléfono:"));
+        JTextField txtTelefono = new JTextField(telefono);
+        panel.add(txtTelefono);
+
+        panel.add(new JLabel("WhatsApp:"));
+        JTextField txtWhatsapp = new JTextField(whatsapp);
+        panel.add(txtWhatsapp);
+
+        panel.add(new JLabel("Email:"));
+        JTextField txtEmail = new JTextField(email);
+        panel.add(txtEmail);
+
+        panel.add(new JLabel("Dirección:"));
+        JTextField txtDireccion = new JTextField(direccion);
+        panel.add(txtDireccion);
+
+        // Crear el cuadro de diálogo
+        int opcion = JOptionPane.showConfirmDialog(
+            parent,
+            panel,
+            "Modificar Socio",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        // Si el usuario presiona "Aceptar"
+        if (opcion == JOptionPane.OK_OPTION) {
+            // Validar que los campos no estén vacíos
+            if (txtTelefono.getText().isEmpty() || txtWhatsapp.getText().isEmpty() ||
+                txtEmail.getText().isEmpty() || txtDireccion.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(parent, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+                return null; // Cancelar la operación
+            }
+
+            // Retornar los nuevos datos
+            return new String[]{
+                txtTelefono.getText(),
+                txtWhatsapp.getText(),
+                txtEmail.getText(),
+                txtDireccion.getText()
+            };
+        }
+
+        // Si el usuario cancela
+        return null;
+    }
+}

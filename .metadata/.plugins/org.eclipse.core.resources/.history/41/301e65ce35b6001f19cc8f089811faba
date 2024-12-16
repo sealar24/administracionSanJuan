@@ -1,0 +1,88 @@
+package controlador;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import administracion.DatabaseConnection;
+
+public class SociosManager {
+
+    /**
+     * Método para agregar un nuevo socio.
+     * @param apellido Apellido del socio.
+     * @param nombre Nombre del socio.
+     * @param dni DNI del socio.
+     * @param telefono Teléfono del socio.
+     * @param watsapp WhatsApp del socio.
+     * @param email Email del socio.
+     * @param direccion Dirección del socio.
+     */
+    public void agregarSocio(String apellido, String nombre, String dni, String telefono, String watsapp, String email, String direccion) {
+        String sql = "INSERT INTO administracion_socios (apellido_socio, nombre_socio, dni_socio, telefono_socio, watsapp_socio, email_socio, direccion_socio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, apellido);
+            pstmt.setString(2, nombre);
+            pstmt.setString(3, dni);
+            pstmt.setString(4, telefono);
+            pstmt.setString(5, watsapp);
+            pstmt.setString(6, email);
+            pstmt.setString(7, direccion);
+            pstmt.executeUpdate();
+            System.out.println("¡Socio agregado exitosamente!");
+        } catch (SQLException e) {
+            System.out.println("Error al agregar el socio.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Método para leer y mostrar todos los socios.
+     */
+    public void listarSocios() {
+        String sql = "SELECT * FROM administracion_socios";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                System.out.printf("ID: %d, Apellido: %s, Nombre: %s, DNI: %s, Teléfono: %s, WhatsApp: %s, Email: %s, Dirección: %s%n",
+                        rs.getInt("id_socio"), rs.getString("apellido_socio"), rs.getString("nombre_socio"),
+                        rs.getString("dni_socio"), rs.getString("telefono_socio"), rs.getString("watsapp_socio"),
+                        rs.getString("email_socio"), rs.getString("direccion_socio"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al listar los socios.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Método para actualizar un socio.
+     * @param id ID del socio.
+     * @param nuevoTelefono Nuevo teléfono.
+     * @param nuevoWatsapp Nuevo WhatsApp.
+     * @param nuevaDireccion Nueva dirección.
+     */
+    public void actualizarSocio(int id, String nuevoTelefono, String nuevoWatsapp, String nuevaDireccion) {
+        String sql = "UPDATE administracion_socios SET telefono_socio = ?, watsapp_socio = ?, direccion_socio = ? WHERE id_socio = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nuevoTelefono);
+            pstmt.setString(2, nuevoWatsapp);
+            pstmt.setString(3, nuevaDireccion);
+            pstmt.setInt(4, id);
+            pstmt.executeUpdate();
+            System.out.println("¡Socio actualizado exitosamente!");
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el socio.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Método para registrar historial en lugar de eliminar un socio.
+     * @param id ID del socio a registrar en historial.
+     */
+    public void registrarHistorialSocio(int id) {
+        // Implementación básica de historial (puede extenderse a otra tabla)
+        System.out.println("Historial registrado para el socio con ID: " + id);
+    }
+}

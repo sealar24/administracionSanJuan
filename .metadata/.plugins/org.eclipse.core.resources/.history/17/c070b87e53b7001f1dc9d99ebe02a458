@@ -1,0 +1,21 @@
+package administracion;
+
+import administracion.controlador.SociosManager;
+
+public class Principal {
+    public static void main(String[] args) {
+        SociosManager manager = new SociosManager();
+
+        // Agregar un nuevo socio
+        manager.agregarSocio("Perez", "Juan", "12345678", "111-222-333", "111-222-333", "juan.perez@gmail.com", "Calle Falsa 123");
+
+        // Listar todos los socios
+        manager.listarSocios();
+
+        // Actualizar un socio
+        manager.actualizarSocio(1, "555-666-777", "555-666-777", "Avenida Siempreviva 742");
+
+        // Registrar historial para un socio
+        manager.registrarHistorialSocio(1);
+    }
+}

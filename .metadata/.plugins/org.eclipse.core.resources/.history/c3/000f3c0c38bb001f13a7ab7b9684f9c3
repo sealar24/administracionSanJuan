@@ -1,0 +1,81 @@
+package administracion.vista;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ModificarSocioForm {
+
+    public static String[] mostrarFormulario(JFrame parent, int id, String nombre, String apellido, String dni, String telefono, String whatsapp, String email, String direccion) {
+        // Crear panel de formulario
+        JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10)); // Ajusté a 7 filas (porque hay más campos)
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Crear etiquetas y campos
+
+        // ID: No editable
+        JLabel lblId = new JLabel("ID:");
+        JLabel txtId = new JLabel(String.valueOf(id)); // Mostrar el ID como texto no editable
+        panel.add(lblId);
+        panel.add(txtId);
+
+        // DNI: No editable
+        JLabel lblDni = new JLabel("DNI:");
+        JLabel txtDni = new JLabel(dni); // Mostrar el DNI como texto no editable
+        panel.add(lblDni);
+        panel.add(txtDni);
+
+        // Nombre: Modificable
+        JLabel lblNombre = new JLabel("Nombre:");
+        JTextField txtNombre = new JTextField(nombre);
+        panel.add(lblNombre);
+        panel.add(txtNombre);
+
+        // Apellido: No editable
+        JLabel lblApellido = new JLabel("Apellido:");
+        JLabel txtApellido = new JLabel(apellido); // Mostrar el apellido como texto no editable
+        panel.add(lblApellido);
+        panel.add(txtApellido);
+
+        // Teléfono: Modificable
+        JLabel lblTelefono = new JLabel("Teléfono:");
+        JTextField txtTelefono = new JTextField(telefono);
+        panel.add(lblTelefono);
+        panel.add(txtTelefono);
+
+        // WhatsApp: Modificable
+        JLabel lblWhatsApp = new JLabel("WhatsApp:");
+        JTextField txtWhatsApp = new JTextField(whatsapp);
+        panel.add(lblWhatsApp);
+        panel.add(txtWhatsApp);
+
+        // Email: Modificable
+        JLabel lblEmail = new JLabel("Email:");
+        JTextField txtEmail = new JTextField(email);
+        panel.add(lblEmail);
+        panel.add(txtEmail);
+
+        // Dirección: Modificable
+        JLabel lblDireccion = new JLabel("Dirección:");
+        JTextField txtDireccion = new JTextField(direccion);
+        panel.add(lblDireccion);
+        panel.add(txtDireccion);
+
+        // Mostrar el formulario en un cuadro de diálogo
+        int opcion = JOptionPane.showConfirmDialog(parent, panel, "Modificar Socio", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        // Si el usuario hace clic en OK, devolver los nuevos valores
+        if (opcion == JOptionPane.OK_OPTION) {
+            return new String[]{
+                txtTelefono.getText(),
+                txtWhatsApp.getText(),
+                txtEmail.getText(),
+                txtDireccion.getText()
+            };
+        }
+        
+        // Si el usuario cancela, retornar null
+        return null;
+    }
+}
+
+

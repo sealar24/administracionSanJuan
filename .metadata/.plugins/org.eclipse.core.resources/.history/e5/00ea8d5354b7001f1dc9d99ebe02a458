@@ -1,0 +1,68 @@
+package administracion.vista;
+
+import administracion.controlador.SociosManager;
+import administracion.modelo.Socio;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
+
+
+public class SociosPantalla extends JFrame {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTable tablaSocios;
+    private DefaultTableModel modeloTabla;
+
+    public SociosPantalla() {
+        setTitle("Gestión de Socios");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        // Crear tabla
+        modeloTabla = new DefaultTableModel(new Object[]{"ID", "Apellido", "Nombre", "DNI", "Teléfono", "Email"}, 0);
+        tablaSocios = new JTable(modeloTabla);
+        JScrollPane scrollPane = new JScrollPane(tablaSocios);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Panel inferior con botones
+        JPanel panelInferior = new JPanel();
+        JButton btnAgregar = new JButton("Agregar");
+        JButton btnActualizar = new JButton("Actualizar");
+        JButton btnEliminar = new JButton("Eliminar");
+
+        panelInferior.add(btnAgregar);
+        panelInferior.add(btnActualizar);
+        panelInferior.add(btnEliminar);
+        add(panelInferior, BorderLayout.SOUTH);
+
+        // Llenar tabla con datos
+        cargarDatos();
+
+        // Eventos de botones
+        btnAgregar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Función agregar en desarrollo"));
+        btnActualizar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Función actualizar en desarrollo"));
+        btnEliminar.addActionListener(e -> JOptionPane.showMessageDialog(this, "Función eliminar en desarrollo"));
+    }
+
+    private void cargarDatos() {
+        SociosManager manager = new SociosManager();
+        List<Socio> listaSocios = manager.obtenerTodos(); // Método en SociosManager
+        modeloTabla.setRowCount(0); // Limpia la tabla
+        for (Socio socio : listaSocios) {
+            modeloTabla.addRow(new Object[]{
+                socio.getId(),
+                socio.getApellido(),
+                socio.getNombre(),
+                socio.getDni(),
+                socio.getTelefono(),
+                socio.getEmail()
+            });
+        }
+    }
+}

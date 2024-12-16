@@ -1,0 +1,102 @@
+package administracion.controlador;
+
+import administracion.modelo.Socio;
+import administracion.conexion.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SociosManager {
+
+    /**
+     * Método para agregar un nuevo socio.
+     * @param apellido Apellido del socio.
+     * @param nombre Nombre del socio.
+     * @param dni DNI del socio.
+     * @param telefono Teléfono del socio.
+     * @param watsapp WhatsApp del socio.
+     * @param email Email del socio.
+     * @param direccion Dirección del socio.
+     * @return true si el socio fue agregado con éxito, false en caso de error.
+     */
+    public boolean agregarSocio(String apellido, String nombre, String dni, String telefono, String watsapp, String email, String direccion) {
+        String sql = "INSERT INTO administracion_socios (apellido_socio, nombre_socio, dni_socio, telefono_socio, watsapp_socio, email_socio, direccion_socio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, apellido);
+            pstmt.setString(2, nombre);
+            pstmt.setString(3, dni);
+            pstmt.setString(4, telefono);
+            pstmt.setString(5, watsapp);
+            pstmt.setString(6, email);
+            pstmt.setString(7, direccion);
+            pstmt.executeUpdate();
+            return true; // Retorna true si se agregó correctamente
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Retorna false si ocurrió un error
+        }
+    }
+
+    /**
+     * Método para obtener todos los socios desde la base de datos.
+     * @return Una lista de objetos Socio que representa a todos los socios registrados.
+     */
+    public List<Socio> obtenerTodos() {
+        List<Socio> listaSocios = new ArrayList<>();
+        String sql = "SELECT * FROM administracion_socios";
+
+        try (Connection con = DatabaseConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Socio socio = new Socio(
+                    rs.getInt("id_socio"),
+                    rs.getString("apellido_socio"),
+                    rs.getString("nombre_socio"),
+                    rs.getString("dni_socio"),
+                    rs.getString("telefono_socio"),
+                    rs.getString("watsapp_socio"),
+                    rs.getString("email_socio"),
+                    rs.getString("direccion_socio")
+                );
+                listaSocios.add(socio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaSocios;
+    }
+
+    /**
+     * Método para actualizar los datos de un socio específico.
+     * @param id ID del socio a actualizar.
+     * @param nuevoTelefono Nuevo teléfono del socio.
+     * @param nuevoWatsapp Nuevo WhatsApp del socio.
+     * @param nuevaDireccion Nueva dirección del socio.
+     * @return true si la actualización fue exitosa, false en caso de error.
+     */
+    public boolean actualizarSocio(int id, String nuevoTelefono, String nuevoWatsapp, String nuevaDireccion) {
+        String sql = "UPDATE administracion_socios SET telefono_socio = ?, watsapp_socio = ?, direccion_socio = ? WHERE id_socio = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nuevoTelefono);
+            pstmt.setString(2, nuevoWatsapp);
+            pstmt.setString(3, nuevaDireccion);
+            pstmt.setInt(4, id);
+            int filasAfectadas = pstmt.executeUpdate();
+            return filasAfectadas > 0; // Retorna true si se actualizó al menos una fila
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Retorna false si ocurrió un error
+        }
+    }
+
+    /**
+     * Método para registrar el historial de un socio en lugar de eliminarlo.
+     * Este método debe ser implementado con lógica adicional.
+     * @param id ID del socio a registrar en historial.
+     */
+    public void registrarHistorialSocio(int id) {
+        // Aquí podrías mover los datos del socio a una tabla de historial
+        System.out.println("Historial registrado para el socio con ID: " + id);
+    }
+}

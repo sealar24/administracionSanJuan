@@ -1,0 +1,48 @@
+package administracion.vista;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class MenuPrincipal extends JFrame {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public MenuPrincipal() {
+        setTitle("Administración - Menú Principal");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(4, 1));
+
+        // Botón para gestionar socios
+        JButton btnSocios = new JButton("Gestión de Socios");
+        btnSocios.addActionListener((ActionEvent e) -> {
+            new SociosPantalla().setVisible(true);
+            dispose(); // Cierra el menú actual
+        });
+
+        // Botón para gestionar empleados
+        JButton btnEmpleados = new JButton("Gestión de Empleados");
+        btnEmpleados.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(this, "Sección en desarrollo...");
+        });
+
+        // Botón para gestionar cuotas
+        JButton btnCuotas = new JButton("Gestión de Cuotas");
+        btnCuotas.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(this, "Sección en desarrollo...");
+        });
+
+        add(btnSocios);
+        add(btnEmpleados);
+        add(btnCuotas);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MenuPrincipal().setVisible(true));
+    }
+}
